@@ -10,7 +10,7 @@ def lista_pubblica(request):
         regali = Regalo.objects.order_by('nome')
     elif ordine == 'prezzo ascendente':
         regali = Regalo.objects.order_by('prezzo')
-    elif ordine == 'prezzo dicendente':
+    elif ordine == 'prezzo discendente':
         regali = Regalo.objects.order_by('-prezzo')
     else:  # default
         regali = Regalo.objects.order_by('ordine_default')

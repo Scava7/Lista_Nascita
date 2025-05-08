@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 
 class Regalo(models.Model):
     nome = models.CharField(max_length=100)
@@ -9,6 +9,9 @@ class Regalo(models.Model):
     link = models.URLField(blank=True, null=True)
     prezzo = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     ordine_default = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return self.nome
 
     def save(self, *args, **kwargs):
         if self.pk:
@@ -26,12 +29,10 @@ class Regalo(models.Model):
         qs = Regalo.objects.filter(ordine_default__gte=nuovo_valore)
         if exclude_id:
             qs = qs.exclude(pk=exclude_id)
-        for regalo in qs.order_by('-ordine_default'):
-            regalo.ordine_default += 1
-            regalo.save()
 
-    def __str__(self):
-        return self.nome
+        with transaction.atomic():
+            # Aggiorna in blocco tutti i record con ordine >= nuovo_valore
+            qs.update(ordine_default=models.F('ordine_default') + 1)
     
 class ImpostazioniPagina(models.Model):
     titolo = models.CharField(max_length=200, default="Lista Nascita")
