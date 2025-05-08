@@ -1,0 +1,35 @@
+# Ambiente virtuale
+venv/
+env/
+
+# Database SQLite
+*.sqlite3
+*.db
+
+# File temporanei / compilati
+*.pyc
+__pycache__/
+*.log
+
+# File di configurazione locale
+.env
+*.env
+.env.*
+
+# File di sistema / backup
+.DS_Store
+Thumbs.db
+
+# Media (upload immagini utenti)
+media/
+
+# Statici raccolti in produzione (non serve in dev)
+staticfiles/
+static/
+
+# IDE/editor
+.vscode/
+.idea/
+
+# File macOS
+Icon?
