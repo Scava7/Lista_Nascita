@@ -23,9 +23,8 @@ Thumbs.db
 # Media (upload immagini utenti)
 media/
 
-# Statici raccolti in produzione (non serve in dev)
+# Statici raccolti da collectstatic (cartella separata usata in prod)
 staticfiles/
-static/
 
 # IDE/editor
 .vscode/
@@ -35,3 +34,9 @@ static/
 Icon?
 
 config_static.py
+
+# IGNORA SOLO IL CONTENUTO STATICO RACCOLTO
+# ma NON ignorare la cartella static/ intera
+# (consente di tenere dentro static/css/stile_base.css, ecc)
+!static/
+!static/**/*
