@@ -1,0 +1,43 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accedi</title>
+
+
+    <link rel="stylesheet" href="{% static 'css/stile_base.css' %}">
+
+
+</head>
+<body>
+    <h1>Accedi con la tua email</h1>
+
+    <div class="card">
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-row">
+                {{ form.email.label_tag }}
+                {{ form.email|add_class:"input_txt" }}
+            </div>
+
+            <button type="submit">Accedi</button>
+        </form>
+
+        <div class="back-link">
+            <p>Non sei ancora registrato?
+                <a href="{% url 'registrazione' %}">Registrati qui</a>
+            </p>
+        </div>
+
+
+    </div>
+
+</body>
+
+{% include 'lista/partials/back_to_list_btn.html' %}
+
+</html>

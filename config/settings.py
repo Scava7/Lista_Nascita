@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'lista'
+    'lista',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -125,7 +126,7 @@ if socket.gethostname().endswith('pythonanywhere.com'):
 else:
     DEBUG = True
     ALLOWED_HOSTS = ['*']
-    #STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 
 # Default primary key field type

@@ -1,79 +1,17 @@
 {% load static %}
+{% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrazione</title>
-    <style>
-        body {
-            font-family: "Helvetica Neue", sans-serif;
-            background-color: #f5f5f5;
-            padding: 2rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #333;
-        }
 
-        .card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
+    <link rel="stylesheet" href="{% static 'css/stile_base.css' %}">
 
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 100px 1fr;
-            gap: 0.5rem;
-            width: 250px;
-            align-items: center;
-        }
-
-        label {
-            font-weight: bold;
-            color: #444;
-            text-align: right;
-        }
-
-        input {
-            padding: 0.5rem;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 1rem;
-            width: 100%;
-        }
-
-        button {
-            margin-top: 1rem;
-            padding: 0.6rem 1rem;
-            background-color: #556b5d;
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-            width: 250px;
-        }
-
-        button:hover {
-            background-color: #445a4b;
-        }
-    </style>
 </head>
+
 <body>
     <h1>Registrati per prenotare</h1>
 
@@ -93,16 +31,28 @@
 
             <div class="form-row">
                 {{ form.nome.label_tag }}
-                {{ form.nome }}
+                {{ form.nome|add_class:"input_txt" }}
             </div>
 
             <div class="form-row">
                 {{ form.email.label_tag }}
-                {{ form.email }}
+                {{ form.email|add_class:"input_txt" }}
             </div>
 
             <button type="submit">Registrati</button>
+
+            <p style="text-align: center; margin-top: 1rem;">
+                Sei già registrato? 
+                <a href="{% url 'login_utente' %}" style="color: #556b5d; font-weight: bold; text-decoration: none;">
+                    Accedi con la tua email
+                </a>
+            </p>
+
         </form>
     </div>
+
+{% include 'lista/partials/back_to_list_btn.html' %}
+
+
 </body>
 </html>

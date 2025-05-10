@@ -310,21 +310,10 @@ function toggleMenu() {
     </div>
 </body>
 
-<!-- MENU BURGER -->
-<div class="burger" onclick="toggleMenu()">☰</div>
 
-<div id="sideMenu" class="side-menu">
-    <button onclick="toggleMenu()" class="close-btn">&times;</button>
 
-    {% if utente %}
-        <p style="margin-top: 1rem;">👋 Ciao <strong>{{ utente.nome }}</strong></p>
-        <p><a href="{% url 'pagina_utente' %}">I miei regali</a></p>
-        <form method="post" action="{% url 'logout_utente' %}">
-            {% csrf_token %}
-            <button type="submit" style="margin-top: 1rem;">Esci</button>
-        </form>
-    {% else %}
-        <p><a href="{% url 'registrazione' %}">Registrati</a></p>
-    {% endif %}
-</div>
+
+{% include 'lista/partials/menu_laterale.html' %}
+
+
 </html>

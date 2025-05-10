@@ -20,3 +20,8 @@ class RegistrazioneForm(forms.ModelForm):
         if UtenteRegistrato.objects.filter(email=email).exists():
             raise ValidationError("Questa email è già registrata")
         return email
+    
+
+
+class LoginForm(forms.Form):
+    email = forms.EmailField(label="Email")
