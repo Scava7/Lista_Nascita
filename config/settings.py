@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+#from config_static import *  # Importa le configurazioni statiche locali
 import os
 import socket
 
@@ -118,15 +119,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = '/static/'
-if socket.gethostname().endswith('pythonanywhere.com'):
-    DEBUG = False
-    ALLOWED_HOSTS = ['Scava7.pythonanywhere.com']
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-else:
-    DEBUG = True
-    ALLOWED_HOSTS = ['*']
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# Alla fine di settings.py o dove c'è la configurazione static
+try:
+    from config_static import *
+except ImportError:
+    raise Exception("⚠️ File config_static.py mancante! Crealo in base all'ambiente.")
 
 
 # Default primary key field type

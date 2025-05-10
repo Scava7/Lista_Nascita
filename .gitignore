@@ -33,3 +33,5 @@ static/
 
 # File macOS
 Icon?
+
+config_static.py
