@@ -138,6 +138,48 @@
             border-color: #445a4b;
         }
 
+        .burger {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 1001;
+            color: #556b5d;
+            transition: opacity 0.3s ease;
+        }
+
+        .burger.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 250px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            padding: 1rem;
+            transform: translateX(100%);
+            transition: transform 0.2s ease;
+            z-index: 1000;
+        }
+        .side-menu.open {
+            transform: translateX(0);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #444;
+            float: right;
+            cursor: pointer;
+        }
+
         @media (max-width: 600px) {
             body {
                 padding: 1rem;
@@ -164,8 +206,26 @@
         }
     </style>
 </head>
+
+<script>
+function toggleMenu() {
+    const menu = document.getElementById('sideMenu');
+    const burger = document.querySelector('.burger');
+
+    menu.classList.toggle('open');
+    burger.classList.toggle('hidden');
+}
+</script>
+
+
 <body>
     <h1>{{ impostazioni.titolo }}</h1>
+
+    {% if utente %}
+        <p style="text-align: center; font-style: italic; margin-bottom: 1.5rem;">
+            Ciao {{ utente.nome }}!
+        </p>
+    {% endif %}
 
     {% if impostazioni.messaggio %}
         <p style="text-align: center; font-style: italic; margin-bottom: 2rem;">
@@ -176,7 +236,7 @@
     <form method="get" style="text-align: center; margin-bottom: 2rem;">
         <label for="ordine" style="font-size: 1.1rem; font-weight: 600; margin-right: 0.5rem;">Ordina per:</label>
         <select name="ordine" id="ordine" onchange="this.form.submit()" class="menu-ordine">
-            <option value="default" {% if ordine_attivo == 'default' %}selected{% endif %}>Ordine predefinito</option>
+            <option value="default" {% if ordine_attivo == 'default' %}selected{% endif %}>Priorità</option>
             <option value="disponibili" {% if ordine_attivo == 'disponibili' %}selected{% endif %}>Disponibili</option>
             <option value="alfabetico" {% if ordine_attivo == 'alfabetico' %}selected{% endif %}>A → Z</option>
             <option value="prezzo ascendente" {% if ordine_attivo == 'prezzo ascendente' %}selected{% endif %}>Prezzo ascendente</option>
@@ -219,10 +279,29 @@
                 <div class="stato {% if regalo.prenotato %}prenotato{% else %}disponibile{% endif %}">
                     {% if regalo.prenotato %}
                         Già prenotato
+                        <!-- Blocco invisibile per mantenere altezza uniforme -->
+                        <div style="visibility: hidden; height: 2.5rem;"></div>
                     {% else %}
                         Disponibile
+
+                        {% if request.session.utente_id %}
+                            <form method="post" action="{% url 'prenota_regalo' regalo.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="bottone-link" style="margin-top: 0.5rem;">
+                                    Prenota
+                                </button>
+                            </form>
+                        {% else %}
+                            <!-- Link attenuato per mantenere spazio e invogliare registrazione -->
+                            <div style="margin-top: 0.5rem; text-align: center;">
+                                <a href="{% url 'registrazione' %}" class="bottone-link" style="opacity: 0.6;">
+                                    Registrati per prenotare
+                                </a>
+                            </div>
+                        {% endif %}
                     {% endif %}
                 </div>
+
             </div>
         </div>
         {% empty %}
@@ -230,4 +309,22 @@
         {% endfor %}
     </div>
 </body>
+
+<!-- MENU BURGER -->
+<div class="burger" onclick="toggleMenu()">☰</div>
+
+<div id="sideMenu" class="side-menu">
+    <button onclick="toggleMenu()" class="close-btn">&times;</button>
+
+    {% if utente %}
+        <p style="margin-top: 1rem;">👋 Ciao <strong>{{ utente.nome }}</strong></p>
+        <p><a href="{% url 'pagina_utente' %}">I miei regali</a></p>
+        <form method="post" action="{% url 'logout_utente' %}">
+            {% csrf_token %}
+            <button type="submit" style="margin-top: 1rem;">Esci</button>
+        </form>
+    {% else %}
+        <p><a href="{% url 'registrazione' %}">Registrati</a></p>
+    {% endif %}
+</div>
 </html>
