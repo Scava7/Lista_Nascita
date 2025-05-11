@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# ===============================================
+# Script di deploy per l'ambiente di produzione
+# Uso:
+#   ./deploy_prod.sh
+# Assicurati che sia eseguibile con:
+#   chmod +x deploy_prod.sh
+# ===============================================
+
 echo "Attivazione ambiente virtuale..."
 source venv/bin/activate
 
