@@ -229,7 +229,7 @@ function toggleMenu() {
 
     {% if impostazioni.messaggio %}
         <p style="text-align: center; font-style: italic; margin-bottom: 2rem;">
-            {{ impostazioni.messaggio }}
+            {{ impostazioni.messaggio|safe }}
         </p>
     {% endif %}
 

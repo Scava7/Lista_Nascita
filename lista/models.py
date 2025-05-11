@@ -1,4 +1,5 @@
 from django.db import models, transaction
+from ckeditor.fields import RichTextField
 
 class Regalo(models.Model):
     nome = models.CharField(max_length=100)
@@ -38,7 +39,7 @@ class Regalo(models.Model):
     
 class ImpostazioniPagina(models.Model):
     titolo = models.CharField(max_length=200, default="Lista Nascita")
-    messaggio = models.TextField(blank=True)
+    messaggio = RichTextField(blank=True)
 
     def __str__(self):
         return "Impostazioni Pagina (modifica unica)"

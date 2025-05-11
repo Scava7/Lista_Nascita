@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'lista',
     'widget_tweaks',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -79,3 +80,20 @@ except ImportError:
     raise Exception("⚠️ Il file config_static.py è mancante o incompleto.")
     
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline', 'Strike'],
+            ['TextColor', 'BGColor'],
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['EmojiPanel'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat', 'Source'],
+        ],
+        'height': 250,
+        'width': '100%',
+        #'extraPlugins': 'justify,colorbutton,emoji',
+    }
+}
