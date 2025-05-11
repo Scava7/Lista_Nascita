@@ -5,7 +5,7 @@
 # Uso:
 #   ./deploy_prod.sh
 # Assicurati che sia eseguibile con:
-#   chmod +x deploy_prod.sh
+#   chmod +x deploy_produzione.sh
 # ===============================================
 
 echo "Attivazione ambiente virtuale..."
