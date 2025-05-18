@@ -101,3 +101,15 @@ button:hover {
     visibility: hidden;
     height: 3.6rem;
 }
+
+
+.minicard {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.minicard.attiva {
+    opacity: 1;
+    transform: translateY(0);
+}

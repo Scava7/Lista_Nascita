@@ -36,12 +36,21 @@ function prenota(event, regaloId) {
 
             // Se esiste il menu laterale e la lista regali, aggiorniamo anche lì
             if (data.minicard) {
-                const lista = document.querySelector('#sideMenu ul');
-                if (lista) {
-                    // evita doppioni
-                    const esiste = document.getElementById(`mini-card-${regaloId}`);
-                    if (!esiste) {
-                        lista.insertAdjacentHTML('beforeend', data.minicard);
+                const lista = document.getElementById('lista-minicard');
+                const esiste = document.getElementById(`mini-card-${regaloId}`);
+
+                if (lista && !esiste) {
+                    // Crea un contenitore temporaneo per parsare l’HTML
+                    const temp = document.createElement('div');
+                    temp.innerHTML = data.minicard.trim();
+                    const nuovaMini = temp.firstElementChild;
+
+                    if (nuovaMini) {
+                        lista.appendChild(nuovaMini);
+                        
+                        setTimeout(() => {
+                            nuovaMini.classList.add('attiva');
+                        }, 20);
                     }
                 }
             }
