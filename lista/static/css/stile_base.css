@@ -90,3 +90,14 @@ button:hover {
     text-decoration: none;
     font-weight: bold;
 }
+
+.spazio-riserva {
+    visibility: hidden;
+    height: 3.1rem; /* stessa altezza del form con bottone incluso */
+}
+
+
+.spazio-bottone {
+    visibility: hidden;
+    height: 3.6rem;
+}

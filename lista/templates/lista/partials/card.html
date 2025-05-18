@@ -1,0 +1,73 @@
+{% load static %}
+{# Inizio della card per il singolo regalo #}
+<div class="card" id="card-{{ regalo.id }}">
+    <div class="contenuto">
+        <div class="immagine-wrapper">
+            {# Se il regalo ha un'immagine, la mostra; altrimenti mostra un'immagine di default #}
+            {% if regalo.immagine %}
+                <img src="{{ regalo.immagine.url }}" alt="{{ regalo.nome }}">
+            {% else %}
+                <img src="{% static 'img/default.png' %}" alt="Immagine non disponibile">
+            {% endif %}
+        </div>
+
+        {# Nome del regalo #}
+        <h2>{{ regalo.nome }}</h2>
+
+        {# Se presente, mostra il modello del regalo #}
+        {% if regalo.modello %}
+            <p class="modello">{{ regalo.modello }}</p>
+        {% endif %}
+
+        {# Descrizione del regalo #}
+        <p>{{ regalo.descrizione }}</p>
+    </div>
+
+    <div class="footer">
+        {# Se presente, mostra il prezzo del regalo formattato a 2 decimali #}
+        {% if regalo.prezzo %}
+            <p class="prezzo">Prezzo: € {{ regalo.prezzo|floatformat:2 }}</p>
+        {% endif %}
+
+        {# Se presente, mostra il link esterno all'articolo #}
+        {% if regalo.link %}
+            <a href="{{ regalo.link }}" target="_blank" rel="noopener noreferrer" class="bottone-link">
+                Vai alla pagina dell'articolo
+            </a>
+        {% endif %}
+
+        {# Stato della prenotazione: prenotato o disponibile #}
+        <div class="stato {% if regalo.prenotato %}prenotato{% else %}disponibile{% endif %}">
+            {% if regalo.prenotato %}
+                {# Se già prenotato, mostra il messaggio e uno spazio vuoto per mantenere l'altezza #}
+                Già prenotato
+                <div class="spazio-bottone"></div>
+            {% else %}
+                {# Se disponibile, mostra il messaggio #}
+                Disponibile
+
+                {# Se l'utente è loggato (ha utente_id in sessione), mostra il form di prenotazione #}
+                {% if request.session.utente_id %}
+                    <div id="messaggio-{{ regalo.id }}"></div>
+                    <form method="post"
+                        action="{% url 'prenota_regalo' regalo.id %}"
+                        onsubmit="prenota(event, {{ regalo.id }})"
+                        id="form-{{ regalo.id }}">
+
+                        {% csrf_token %}
+                        <button type="submit" class="bottone-link" style="margin-top: 0.5rem;">
+                            Prenota
+                        </button>
+                    </form>
+                {% else %}
+                    {# Se non loggato, invita a registrarsi per prenotare #}
+                    <div style="margin-top: 0.5rem; text-align: center;">
+                        <a href="{% url 'registrazione' %}" class="bottone-link" style="opacity: 0.6;">
+                            Registrati per prenotare
+                        </a>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>

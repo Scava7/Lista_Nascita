@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 from .models import Regalo, ImpostazioniPagina, UtenteRegistrato
 from .forms import RegistrazioneForm, LoginForm
 from django.contrib import messages
-from django.shortcuts import get_object_or_404
 from .models import Regalo, UtenteRegistrato
 from django.views.decorators.http import require_POST
 
@@ -111,33 +112,56 @@ def cambia_nome(request):
 @require_POST
 def annulla_prenotazione(request, regalo_id):
     utente_id = request.session.get('utente_id')
-    if not utente_id:
-        return redirect('registrazione')
+    is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
 
-    try:
-        regalo = Regalo.objects.get(pk=regalo_id, prenotato_da_id=utente_id)
-        regalo.prenotato = False
-        regalo.prenotato_da = None
-        regalo.save()
-    except Regalo.DoesNotExist:
-        pass
+    regalo = get_object_or_404(Regalo, pk=regalo_id, prenotato_da_id=utente_id)
+
+    regalo.prenotato = False
+    regalo.prenotato_da = None
+    regalo.save()
+
+    if is_ajax:
+        card_html = render_to_string('lista/partials/card.html', {
+            'regalo': regalo,
+            'request': request
+        })
+        return JsonResponse({'success': True, 'html': card_html})
 
     return redirect('lista_pubblica')
 
 @require_POST
 def prenota_regalo(request, regalo_id):
     utente_id = request.session.get('utente_id')
+    is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
+
     if not utente_id:
-        messages.error(request, "Devi essere registrato per prenotare.")
+        if is_ajax:
+            return JsonResponse({
+                'success': False,
+                'message': 'Devi essere registrato per prenotare.'
+            })
         return redirect('registrazione')
 
     regalo = get_object_or_404(Regalo, pk=regalo_id)
-    if regalo.prenotato:
-        messages.warning(request, "Questo regalo è già stato prenotato.")
-    else:
+
+    if not regalo.prenotato:
         regalo.prenotato = True
-        regalo.prenotato_da_id = utente_id  # serve campo in modello
+        regalo.prenotato_da_id = utente_id
         regalo.save()
-        messages.success(request, "Regalo prenotato con successo!")
+
+    if is_ajax:
+        card_html = render_to_string('lista/partials/card.html', {
+            'regalo': regalo,
+            'request': request
+        })
+        minicard_html = render_to_string('lista/partials/minicard.html', {
+            'r': regalo,
+            'request': request
+        })
+        return JsonResponse({
+            'success': True,
+            'html': card_html,
+            'minicard': minicard_html
+        })
 
     return redirect('lista_pubblica')

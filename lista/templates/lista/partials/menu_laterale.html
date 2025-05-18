@@ -36,56 +36,24 @@
     {% if utente %}
         <p style="margin-top: 1rem; font-size: 1rem;">👋 <strong>{{ utente.nome }}</strong></p>
 
-        {% if regali_utente %}
-            <div style="margin-top: 1.5rem;">
-                <p style="font-weight: bold; margin-bottom: 0.5rem;">I tuoi regali:</p>
-                <ul style="padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 1rem;">
+        <div style="margin-top: 1.5rem;">
+            <p style="font-weight: bold; margin-bottom: 0.5rem;">I tuoi regali:</p>
+
+            {% if regali_utente %}
+                <ul id="lista-minicard" style="padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 1rem;">
                     {% for r in regali_utente %}
-                    <li style="border: 1px solid #ccc; border-radius: 8px; padding: 0.8rem; background-color: #fdfdfd;">
-                        <strong style="display: block; font-size: 1rem; color: #333;">{{ r.nome }}</strong>
-                        {% if r.prezzo %}
-                            <span style="display: block; color: #666; margin-bottom: 0.6rem;">{{ r.prezzo }} €</span>
-                        {% endif %}
-
-                        {% if r.link %}
-                        <a href="{{ r.link }}" target="_blank" rel="noopener noreferrer" style="
-                            display: block;
-                            background-color: #556b5d;
-                            color: white;
-                            text-align: center;
-                            padding: 0.4rem;
-                            border-radius: 6px;
-                            text-decoration: none;
-                            font-size: 0.85rem;
-                            margin-bottom: 0.4rem;
-                        ">Vai alla pagina dell'articolo</a>
-                        {% endif %}
-
-                        <form method="post" action="{% url 'annulla_prenotazione' r.id %}" style="margin: 0;">
-                            {% csrf_token %}
-                            <button type="submit" style="
-                                width: 100%;
-                                background-color: #b23b3b;
-                                color: white;
-                                border: none;
-                                padding: 0.4rem;
-                                font-size: 0.85rem;
-                                border-radius: 6px;
-                                cursor: pointer;
-                            ">Elimina</button>
-                        </form>
-                    </li>
+                        {% include 'lista/partials/minicard.html' %}
                     {% endfor %}
                 </ul>
-            </div>
-        {% else %}
-            <p style="font-style: italic; margin-top: 1rem;">Nessun regalo selezionato</p>
-        {% endif %}
+            {% else %}
+                <p style="font-style: italic; margin-top: 1rem;">Nessun regalo selezionato</p>
+                <!-- ul vuoto per JS se si prenota un nuovo regalo con menu aperto -->
+                <ul id="lista-minicard" style="display: none;"></ul>
+            {% endif %}
+        </div>
 
-        <!-- Separatore visivo -->
         <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #ccc;">
 
-        <!-- Blocchi azione -->
         <div style="display: flex; flex-direction: column; gap: 0.8rem;">
             {% if request.GET.mostra_modifica_nome %}
             <form method="post" action="{% url 'cambia_nome' %}">

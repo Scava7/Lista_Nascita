@@ -1,0 +1,38 @@
+<li id="mini-card-{{ r.id }}" style="border: 1px solid #ccc; border-radius: 8px; padding: 0.8rem; background-color: #fdfdfd;">
+    <strong style="display: block; font-size: 1rem; color: #333;">{{ r.nome }}</strong>
+
+    {% if r.prezzo %}
+        <span style="display: block; color: #666; margin-bottom: 0.6rem;">{{ r.prezzo }} €</span>
+    {% endif %}
+
+    {% if r.link %}
+        <a href="{{ r.link }}" target="_blank" rel="noopener noreferrer" style="
+            display: block;
+            background-color: #556b5d;
+            color: white;
+            text-align: center;
+            padding: 0.4rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-bottom: 0.4rem;
+        ">Vai alla pagina dell'articolo</a>
+    {% endif %}
+
+    <form method="post"
+          action="{% url 'annulla_prenotazione' r.id %}"
+          onsubmit="annullaPrenotazione(event, {{ r.id }})"
+          style="margin: 0;">
+        {% csrf_token %}
+        <button type="submit" style="
+            width: 100%;
+            background-color: #b23b3b;
+            color: white;
+            border: none;
+            padding: 0.4rem;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            cursor: pointer;
+        ">Elimina</button>
+    </form>
+</li>

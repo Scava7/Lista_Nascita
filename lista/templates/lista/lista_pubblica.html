@@ -217,7 +217,6 @@ function toggleMenu() {
 }
 </script>
 
-
 <body>
     <h1>{{ impostazioni.titolo }}</h1>
 
@@ -246,68 +245,14 @@ function toggleMenu() {
 
     <div class="grid">
         {% for regalo in regali %}
-        <div class="card">
-            <div class="contenuto">
-                <div class="immagine-wrapper">
-                    {% if regalo.immagine %}
-                        <img src="{{ regalo.immagine.url }}" alt="{{ regalo.nome }}">
-                    {% else %}
-                        <img src="{% static 'img/default.png' %}" alt="Immagine non disponibile">
-                    {% endif %}
-                </div>
-
-                <h2>{{ regalo.nome }}</h2>
-
-                {% if regalo.modello %}
-                    <p class="modello">{{ regalo.modello }}</p>
-                {% endif %}
-
-                <p>{{ regalo.descrizione }}</p>
-            </div>
-
-            <div class="footer">
-                {% if regalo.prezzo %}
-                    <p class="prezzo">Prezzo: € {{ regalo.prezzo|floatformat:2 }}</p>
-                {% endif %}
-
-                {% if regalo.link %}
-                    <a href="{{ regalo.link }}" target="_blank" rel="noopener noreferrer" class="bottone-link">
-                        Vai alla pagina dell'articolo
-                    </a>
-                {% endif %}
-
-                <div class="stato {% if regalo.prenotato %}prenotato{% else %}disponibile{% endif %}">
-                    {% if regalo.prenotato %}
-                        Già prenotato
-                        <!-- Blocco invisibile per mantenere altezza uniforme -->
-                        <div style="visibility: hidden; height: 2.5rem;"></div>
-                    {% else %}
-                        Disponibile
-
-                        {% if request.session.utente_id %}
-                            <form method="post" action="{% url 'prenota_regalo' regalo.id %}">
-                                {% csrf_token %}
-                                <button type="submit" class="bottone-link" style="margin-top: 0.5rem;">
-                                    Prenota
-                                </button>
-                            </form>
-                        {% else %}
-                            <!-- Link attenuato per mantenere spazio e invogliare registrazione -->
-                            <div style="margin-top: 0.5rem; text-align: center;">
-                                <a href="{% url 'registrazione' %}" class="bottone-link" style="opacity: 0.6;">
-                                    Registrati per prenotare
-                                </a>
-                            </div>
-                        {% endif %}
-                    {% endif %}
-                </div>
-
-            </div>
-        </div>
+            {% include 'lista/partials/card.html' %}
         {% empty %}
             <p>Nessun regalo ancora inserito.</p>
         {% endfor %}
     </div>
+
+    <script src="{% static 'js/prenotazione.js' %}"></script>
+
 </body>
 
 
